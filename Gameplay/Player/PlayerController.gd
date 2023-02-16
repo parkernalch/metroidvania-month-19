@@ -59,6 +59,19 @@ func _ready():
 	$WallJumpControlTimer.one_shot = true
 	set_resource_derived_properties()
 
+func get_save_data():
+	return {
+		"position": {
+			"x": global_position.x,
+			"y": global_position.y
+		},
+		"filename": get_filename(),
+		"parent": get_parent().get_path()
+	}
+	
+func load_save_data(data):
+	global_position = Vector2(data.position.x, data.position.y)
+
 func _on_coyote_time_expired():
 	if jumps_remaining > 0:
 		jumps_remaining -= 1

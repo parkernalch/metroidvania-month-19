@@ -29,6 +29,7 @@ config/icon="res://icon.png"
 EventBus="*res://singletons/event_bus.gd"
 Global="*res://singletons/global.gd"
 Types="*res://singletons/types.gd"
+SaveLoad="*res://singletons/save_load.gd"
 
 [display]
 
