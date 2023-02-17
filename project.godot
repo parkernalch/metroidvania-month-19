@@ -9,19 +9,49 @@
 config_version=4
 
 _global_script_classes=[ {
+"base": "Node2D",
+"class": "BaseEnemy",
+"language": "GDScript",
+"path": "res://Gameplay/Enemy/BaseEnemy/base_enemy.gd"
+}, {
+"base": "State",
+"class": "EnemyState",
+"language": "GDScript",
+"path": "res://StateMachine/EnemyStates/enemy_state.gd"
+}, {
 "base": "Resource",
 "class": "PlatformerData",
 "language": "GDScript",
 "path": "res://Gameplay/Player/platformer_data.gd"
+}, {
+"base": "KinematicBody2D",
+"class": "Player",
+"language": "GDScript",
+"path": "res://Gameplay/Player/PlayerController.gd"
+}, {
+"base": "Node",
+"class": "State",
+"language": "GDScript",
+"path": "res://StateMachine/state.gd"
+}, {
+"base": "Node",
+"class": "StateMachine",
+"language": "GDScript",
+"path": "res://StateMachine/state_machine.gd"
 } ]
 _global_script_class_icons={
-"PlatformerData": ""
+"BaseEnemy": "",
+"EnemyState": "",
+"PlatformerData": "",
+"Player": "",
+"State": "",
+"StateMachine": ""
 }
 
 [application]
 
 config/name="Metroidvania Month 19"
-run/main_scene="res://UI/MainMenu.tscn"
+run/main_scene="res://Gameplay/Stages/TestStage/TestStage.tscn"
 config/icon="res://icon.png"
 
 [autoload]

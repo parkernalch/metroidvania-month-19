@@ -29,7 +29,7 @@ move_top_speed = 6.0
 [sub_resource type="RectangleShape2D" id=2]
 extents = Vector2( 8, 8 )
 
-[node name="PlaformerCharacter" type="KinematicBody2D"]
+[node name="PlaformerCharacter" type="KinematicBody2D" groups=["Persist", "Player"]]
 collision_mask = 2
 script = ExtResource( 2 )
 platformer_data = SubResource( 3 )
@@ -71,7 +71,7 @@ collision_mask = 2
 
 [node name="WallJumpControlTimer" type="Timer" parent="."]
 
-[node name="Camera2D" type="Camera2D" parent="." groups=["Persist"]]
+[node name="Camera2D" type="Camera2D" parent="."]
 current = true
 zoom = Vector2( 0.4, 0.4 )
 limit_left = 0
