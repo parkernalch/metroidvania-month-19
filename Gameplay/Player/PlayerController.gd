@@ -39,7 +39,7 @@ var jump_pressed = false
 var jump_released = false
 
 # wall
-var on_wall = false # "left" or "right"
+var on_wall = null # "left" or "right"
 var wall_drag_strength = 0
 
 class Accel:
@@ -155,9 +155,8 @@ func apply_vertical_forces(delta):
 	else:
 		v += base_gravity * data.gravity_up_modifier * delta * size_per_unit
 	
-	print(on_wall)
 	# handle wall drag
-	if on_wall and velocity.y > 0:
+	if on_wall != null and velocity.y > 0:
 		var wall_drag = v * (wall_drag_strength) * sign(v) * -1
 		v += wall_drag
 	if v > 0 and v > data.gravity_terminal_velocity:
@@ -172,9 +171,14 @@ func _physics_process(delta):
 	var is_on_left_wall = left_cast.is_colliding()
 	var is_on_right_wall = right_cast.is_colliding()
 	
-	on_wall = true if is_on_left_wall or is_on_right_wall else false
-	 
-	if on_wall:
+	if is_on_left_wall:
+		on_wall = "left"
+	elif is_on_right_wall:
+		on_wall = "right"
+	else:
+		on_wall = null
+
+	if on_wall != null:
 		wall_drag_strength = max(wall_drag_strength - delta / data.wall_drag_decay_time, 0)
 	
 	if was_airborne and is_grounded:
@@ -185,10 +189,18 @@ func _physics_process(delta):
 		coyote_timer.start(data.jump_coyote_timeout)
 
 	if (jump_pressed or jump_buffer_timer.time_left > 0):
-		if on_wall and not is_grounded:
-			velocity.y = - data.wall_jump_force * sin(data.wall_jump_angle)
-			velocity.x = - data.wall_jump_force * cos(data.wall_jump_angle)
-			if left_cast.is_colliding():
+		if on_wall != null and not is_grounded:
+			var jump_off_wall_reduction = 1
+			
+			# when jumping the opposite direction of the wall reduce the jump_force
+			# there might be a better way to solve this ¯\_(ツ)_/¯
+			var input = Input.get_action_strength("move_right") - Input.get_action_strength("move_left")
+			if on_wall == "right" and input <= 0 or on_wall == "left" and input > 0:
+				jump_off_wall_reduction = 0.45
+		
+			velocity.y = - (data.wall_jump_force * jump_off_wall_reduction) * sin(data.wall_jump_angle)
+			velocity.x = - (data.wall_jump_force * jump_off_wall_reduction) * cos(data.wall_jump_angle)
+			if on_wall == "left":
 				velocity.x *= -1
 			$WallJumpControlTimer.start()
 		elif jumps_remaining > 0 and time_since_jump > coyote_timer.wait_time:
