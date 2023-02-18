@@ -11,6 +11,7 @@ onready var cast2: RayCast2D = $DownCast2
 onready var left_cast: RayCast2D = $LeftCast
 onready var right_cast: RayCast2D = $RightCast
 onready var coyote_timer: Timer = $CoyoteTimer
+onready var wall_drag_decay_timer: Timer = $WallDragDecayTimer
 onready var jump_buffer_timer: Timer = $JumpBufferTimer
 
 export var size_per_unit = 16
@@ -38,7 +39,7 @@ var jump_pressed = false
 var jump_released = false
 
 # wall
-var on_wall = null # "left" or "right"
+var on_wall = false # "left" or "right"
 var wall_drag_strength = 0
 
 class Accel:
@@ -133,7 +134,7 @@ func apply_horizontal_forces(delta, forces):
 		var v = velocity.x
 		var has_wall_jumped = $WallJumpControlTimer.time_left > 0
 		if has_wall_jumped:
-			var wall_jump_control_factor = 1 if not has_wall_jumped else 1 - $WallJumpControlTimer.time_left / $WallJumpControlTimer.wait_time
+			var wall_jump_control_factor = $WallJumpControlTimer.time_left / $WallJumpControlTimer.wait_time
 			v += forces.acceleration * delta * horizontal_input * wall_jump_control_factor
 			return v
 		v += forces.acceleration * delta * horizontal_input
@@ -154,8 +155,9 @@ func apply_vertical_forces(delta):
 	else:
 		v += base_gravity * data.gravity_up_modifier * delta * size_per_unit
 	
+	print(on_wall)
 	# handle wall drag
-	if on_wall != null and velocity.y > 0:
+	if on_wall and velocity.y > 0:
 		var wall_drag = v * (wall_drag_strength) * sign(v) * -1
 		v += wall_drag
 	if v > 0 and v > data.gravity_terminal_velocity:
@@ -167,17 +169,12 @@ func _physics_process(delta):
 	var was_stationary = time_since_last_move > 0.5 and is_grounded
 	is_grounded = cast.is_colliding() or cast2.is_colliding()
 	
-	var is_on_left_wall = left_cast.is_colliding() and horizontal_input < 0
-	var is_on_right_wall = right_cast.is_colliding() and horizontal_input > 0
+	var is_on_left_wall = left_cast.is_colliding()
+	var is_on_right_wall = right_cast.is_colliding()
 	
-	if is_on_left_wall:
-		on_wall = "left"
-	elif is_on_right_wall:
-		on_wall = "right"
-	else:
-		on_wall = null
+	on_wall = true if is_on_left_wall or is_on_right_wall else false
 	 
-	if on_wall != null:
+	if on_wall:
 		wall_drag_strength = max(wall_drag_strength - delta / data.wall_drag_decay_time, 0)
 	
 	if was_airborne and is_grounded:
@@ -188,10 +185,10 @@ func _physics_process(delta):
 		coyote_timer.start(data.jump_coyote_timeout)
 
 	if (jump_pressed or jump_buffer_timer.time_left > 0):
-		if on_wall != null and not is_grounded:
+		if on_wall and not is_grounded:
 			velocity.y = - data.wall_jump_force * sin(data.wall_jump_angle)
 			velocity.x = - data.wall_jump_force * cos(data.wall_jump_angle)
-			if on_wall == "left":
+			if left_cast.is_colliding():
 				velocity.x *= -1
 			$WallJumpControlTimer.start()
 		elif jumps_remaining > 0 and time_since_jump > coyote_timer.wait_time:
