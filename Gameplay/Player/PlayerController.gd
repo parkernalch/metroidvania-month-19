@@ -115,7 +115,6 @@ func precalculateAcceleration(accel_time, decel_time):
 	return Accel.new(acceleration, deceleration)
 
 func _process(delta):
-	horizontal_input = Input.get_action_strength("move_right") - Input.get_action_strength("move_left")		
 	jump_pressed = Input.is_action_just_pressed("jump")
 	if jump_pressed:
 		jump_buffer_timer.start(data.jump_buffer_timeout)
@@ -164,6 +163,8 @@ func apply_vertical_forces(delta):
 	return v
 	
 func _physics_process(delta):
+	horizontal_input = Input.get_action_strength("move_right") - Input.get_action_strength("move_left")		
+
 	var was_airborne = not is_grounded
 	var was_stationary = time_since_last_move > 0.5 and is_grounded
 	is_grounded = cast.is_colliding() or cast2.is_colliding()
@@ -190,16 +191,9 @@ func _physics_process(delta):
 
 	if (jump_pressed or jump_buffer_timer.time_left > 0):
 		if on_wall != null and not is_grounded:
-			var jump_off_wall_reduction = 1
-			
-			# when jumping the opposite direction of the wall reduce the jump_force
-			# there might be a better way to solve this ¯\_(ツ)_/¯
-			var input = Input.get_action_strength("move_right") - Input.get_action_strength("move_left")
-			if on_wall == "right" and input <= 0 or on_wall == "left" and input > 0:
-				jump_off_wall_reduction = 0.45
-		
-			velocity.y = - (data.wall_jump_force * jump_off_wall_reduction) * sin(data.wall_jump_angle)
-			velocity.x = - (data.wall_jump_force * jump_off_wall_reduction) * cos(data.wall_jump_angle)
+			velocity.y = - data.wall_jump_force * sin(data.wall_jump_angle)
+			velocity.x = - data.wall_jump_force * cos(data.wall_jump_angle)
+
 			if on_wall == "left":
 				velocity.x *= -1
 			$WallJumpControlTimer.start()
