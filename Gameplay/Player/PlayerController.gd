@@ -49,6 +49,9 @@ class Accel:
 		self.acceleration = a
 		self.deceleration = d
 
+# Gameplay
+onready var animation_player = $AnimationPlayer
+
 func _ready():
 	assert(platformer_data is PlatformerData)
 	data = platformer_data
@@ -240,3 +243,12 @@ func _physics_process(delta):
 	else:
 		time_since_last_move = 0
 	time_since_jump += delta
+
+# GAMEPLAY
+func evolve() -> void:
+	animation_player.play("evolve")
+	set_process(false)
+	set_physics_process(false)
+	yield(animation_player, "animation_finished")
+	set_process(true)
+	set_physics_process(true)
