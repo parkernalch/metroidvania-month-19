@@ -42,6 +42,9 @@ var jump_released = false
 var on_wall = null # "left" or "right"
 var wall_drag_strength = 0
 
+# health
+var health = 100
+
 class Accel:
 	var acceleration: float
 	var deceleration: float
@@ -70,12 +73,14 @@ func get_save_data():
 			"x": global_position.x,
 			"y": global_position.y
 		},
+		"health": health,
 		"filename": get_filename(),
 		"parent": get_parent().get_path()
 	}
 	
 func load_save_data(data):
 	global_position = Vector2(data.position.x, data.position.y)
+	health = data.health
 
 func _on_coyote_time_expired():
 	if jumps_remaining > 0:

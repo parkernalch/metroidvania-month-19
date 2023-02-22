@@ -34,6 +34,22 @@ func _physics_process(delta):
 func attack() -> void:
 	pass
 
+func get_save_data():
+	return {
+		"position": {
+			"x": global_position.x,
+			"y": global_position.y
+		},
+		"health": current_health,
+		"filename": get_filename(),
+		"parent": get_parent().get_path()
+	}
+
+
+func load_save_data(data):
+	global_position = Vector2(data.position.x, data.position.y)
+	current_health = data.health
+
 func take_damage(amount) -> int:
 	current_health -= amount
 	animation_player.play("take_damage")
