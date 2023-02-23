@@ -22,7 +22,7 @@ script = ExtResource( 3 )
 position = Vector2( 488, 543 )
 
 [node name="PlaformerCharacter" parent="." instance=ExtResource( 2 )]
-position = Vector2( 538, 514 )
+position = Vector2( 620, 600 )
 
 [node name="BaseEnemy" parent="." groups=["Persist"] instance=ExtResource( 4 )]
 position = Vector2( 814, 620 )

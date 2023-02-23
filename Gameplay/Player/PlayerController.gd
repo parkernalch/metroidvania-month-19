@@ -80,7 +80,8 @@ func get_save_data():
 	
 func load_save_data(data):
 	global_position = Vector2(data.position.x, data.position.y)
-	health = data.health
+	if data.has("health"):
+		health = data.health
 
 func _on_coyote_time_expired():
 	if jumps_remaining > 0:

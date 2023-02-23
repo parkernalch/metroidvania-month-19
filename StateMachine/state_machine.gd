@@ -31,6 +31,5 @@ func transition_to(new_state: String, msg: Dictionary = {}) -> void:
 	state.exit()
 	state = get_node(new_state)
 	state.enter(msg)
-	$Label.text = new_state
 	emit_signal("transitioned", new_state)
 	
