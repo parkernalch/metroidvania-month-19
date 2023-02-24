@@ -19,7 +19,7 @@ func update(delta: float) -> void:
 	pass
 	
 func physics_update(delta: float) -> void:
-	owner.velocity = Vector2(120, 0) * direction
+	owner.velocity = Vector2(60, 0) * direction
 	owner.velocity += Vector2(0, 9.8)
 	if not owner.is_on_floor():
 		state_machine.transition_to("falling")

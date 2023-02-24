@@ -8,7 +8,7 @@ var time_off_wall = 0
 var last_wall = 0
 	
 func handle_input(input: InputEvent) -> void:
-	if input.is_action_pressed("jump"):
+	if input.is_action_pressed("jump") and owner.can_wall_jump():
 		state_machine.transition_to("jumping", {
 			"jumps_remaining": 1,
 			"control_lock_time": jump_control_lock_time,

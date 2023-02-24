@@ -9,7 +9,7 @@ func handle_input(input: InputEvent) -> void:
 
 func update(delta: float) -> void:
 	if Input.get_action_strength("move_right") - Input.get_action_strength("move_left"):
-		state_machine.transition_to("running")
+		state_machine.transition_to("running" if owner.can_run() else "walking")
 	pass
 	
 func physics_update(delta: float) -> void:

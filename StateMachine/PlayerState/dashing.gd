@@ -12,7 +12,7 @@ func update(delta: float) -> void:
 	
 func physics_update(delta: float) -> void:
 	owner.velocity =  direction * 350
-	if owner.is_on_wall() :
+	if owner.is_on_wall() and owner.can_wall_jump():
 		state_machine.transition_to("sliding")
 	if dash_time <= 0:
 		state_machine.transition_to("falling")

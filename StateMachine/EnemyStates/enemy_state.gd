@@ -2,7 +2,7 @@ extends State
 class_name EnemyState
 
 var enemy: BaseEnemy
-var player: Player
+var player: Node2D
 
 func _ready() -> void:
 	yield(owner, "ready")
