@@ -16,6 +16,8 @@ func update(delta: float) -> void:
 	direction = Input.get_action_strength("move_right") - Input.get_action_strength("move_left")	
 	if direction == 0:
 		state_machine.transition_to("idle")
+	if Input.get_action_strength("crouch") > 0 and owner.can_shrink():
+		state_machine.transition_to("shrinking")
 	pass
 	
 func physics_update(delta: float) -> void:

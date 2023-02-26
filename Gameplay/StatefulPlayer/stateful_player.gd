@@ -20,13 +20,44 @@ func setup_casts():
 	add_child(left_cast)
 	right_cast.collision_mask = 2
 	left_cast.collision_mask = 2
-	right_cast.cast_to = Vector2(12, 0)
-	left_cast.cast_to = Vector2(-12, 0)
+	right_cast.cast_to = Vector2(12, -4)
+	left_cast.cast_to = Vector2(-12, -4)
 	right_cast.enabled = true
 	left_cast.enabled = true
 
 func _stateMachine_transitioned(new_name):
 	print(new_name)
+	
+func _unhandled_input(event: InputEvent):
+	if event is InputEventKey and event.is_pressed():
+		match event.scancode:
+			KEY_1:
+				evolve(1)
+			KEY_2:
+				evolve(1 << 1)
+			KEY_3:
+				evolve(1 << 2)
+			KEY_4:
+				evolve(1 << 3)
+			KEY_5:
+				evolve(1 << 4)
+			KEY_6:
+				evolve(1 << 5)
+			KEY_7:
+				evolve(1 << 6)
+			KEY_8:
+				evolve(1 << 7)
+			KEY_0:
+				evolve(1)
+				evolve(2)
+				evolve(3)
+				evolve(4)
+				evolve(8)
+				evolve(16)
+				evolve(32)
+				evolve(64)
+			_:
+				pass
 
 func _physics_process(delta):
 	velocity = move_and_slide_with_snap(velocity.limit_length(325), Vector2.UP, Vector2.UP)
@@ -45,6 +76,34 @@ func evolve(pickup_value: int = 0) -> void:
 		powers += pickup_value
 		EventBus.emit_signal("powerup", pickup_value)
 		print("got new power!")
+	pass
+
+func is_squeezable():
+	if not is_on_wall() or not can_shrink():
+		return
+	var wall = get_wall()
+	var output = false
+	if wall == 1:
+		right_cast.cast_to = Vector2(12, 8)
+		right_cast.force_raycast_update()
+		output = not right_cast.is_colliding()
+	elif wall == -1:
+		left_cast.cast_to = Vector2(-12, 8)
+		left_cast.force_raycast_update()
+		output =  not left_cast.is_colliding()
+	right_cast.cast_to = Vector2(12, -4)
+	left_cast.cast_to = Vector2(-12, -4)
+	print("" if output else "not" + " squeezable")
+	return output
+	
+func shrink_collider():
+	$CollisionShape2D.scale = Vector2(1, 0.5)
+	$Sprite.scale = Vector2(0.2, 0.1)
+	pass
+
+func unshrink_collider():
+	$CollisionShape2D.scale = Vector2(1, 1)
+	$Sprite.scale = Vector2(0.2, 0.2)
 	pass
 
 func can_run() -> bool:
