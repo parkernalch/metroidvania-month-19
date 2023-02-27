@@ -13,7 +13,7 @@ func update(delta: float) -> void:
 func physics_update(delta: float) -> void:
 	owner.velocity = Vector2(direction * 60, owner.velocity.y)
 	owner.velocity += Vector2(0, 9.8)
-	if Input.get_action_strength("crouch") <= 0:
+	if Input.get_action_strength("crouch") <= 0 and owner.can_unshrink():
 		state_machine.transition_to("idle")
 
 func enter(_msg := {}) -> void:

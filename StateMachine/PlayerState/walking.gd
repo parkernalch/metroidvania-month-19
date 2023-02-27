@@ -4,6 +4,8 @@ var state_machine: StateMachine
 var direction: float
 	
 func handle_input(input: InputEvent) -> void:
+	if input.is_action_pressed("sprint") and owner.can_run():
+		state_machine.transition_to("running")
 	if input.is_action_pressed("jump") and owner.can_jump():
 		state_machine.transition_to("jumping", { "jumps_remaining": 1 })
 	if input.is_action_pressed("dash") and owner.can_dash():
@@ -21,12 +23,13 @@ func update(delta: float) -> void:
 	pass
 	
 func physics_update(delta: float) -> void:
-	owner.velocity = Vector2(60, 0) * direction
+	owner.velocity = Vector2(owner.horizontal_speed, 0) * direction
 	owner.velocity += Vector2(0, 9.8)
 	if not owner.is_on_floor():
 		state_machine.transition_to("falling")
 	
 func enter(_msg := {}) -> void:
+	owner.horizontal_speed = 100
 	pass
 	
 func exit() -> void:

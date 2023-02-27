@@ -8,8 +8,7 @@ var control_lock_time = 0
 var time_since_jump = 0
 var wall = 0
 var jump_type = ""
-var speed = 100
-	
+
 func handle_input(input: InputEvent) -> void:
 	if input.is_action_released("jump") and owner.can_double_jump():
 		state_machine.transition_to("falling", { "jumps_remaining": jumps_remaining })
@@ -26,9 +25,9 @@ func update(delta: float) -> void:
 func physics_update(delta: float) -> void:
 	if control_lock_time > 0:
 		control_lock_time -= delta
-		owner.velocity = Vector2(owner.velocity.x + direction * speed * (0.25 - control_lock_time), owner.velocity.y)		
+		owner.velocity = Vector2(owner.velocity.x + direction * owner.horizontal_speed * (0.25 - control_lock_time), owner.velocity.y)		
 	else:	
-		owner.velocity = Vector2(direction * speed, owner.velocity.y)
+		owner.velocity = Vector2(direction * owner.horizontal_speed, owner.velocity.y)
 	owner.velocity += Vector2.DOWN * 9.8
 	if owner.velocity.y > 0:
 		state_machine.transition_to("falling", { "jumps_remaining": jumps_remaining })
@@ -60,7 +59,6 @@ func evaluate_launch_vector(direction: float, wall: int) -> Vector2:
 	return Vector2.ZERO
 	
 func enter(_msg := {}) -> void:
-	speed = 120 if owner.can_run() else 60
 	direction = Input.get_action_strength("move_right") - Input.get_action_strength("move_left")
 	jumps_remaining = _msg.jumps_remaining if _msg.has("jumps_remaining") else 0
 	control_lock_time = _msg.control_lock_time if _msg.has("control_lock_time") else 0

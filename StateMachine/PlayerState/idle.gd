@@ -9,7 +9,8 @@ func handle_input(input: InputEvent) -> void:
 
 func update(delta: float) -> void:
 	if Input.get_action_strength("move_right") - Input.get_action_strength("move_left"):
-		state_machine.transition_to("running" if owner.can_run() else "walking")
+		var can_run = (Input.get_action_strength("sprint") and owner.can_run())
+		state_machine.transition_to("running" if can_run else "walking")
 	if Input.get_action_strength("crouch") > 0 and owner.can_shrink():
 		state_machine.transition_to("shrinking")
 	pass
