@@ -1,0 +1,31 @@
+[gd_scene load_steps=5 format=2]
+
+[ext_resource path="res://icon.png" type="Texture" id=1]
+[ext_resource path="res://Gameplay/Enemy/Boss/base_boss.gd" type="Script" id=2]
+
+[sub_resource type="Curve2D" id=1]
+_data = {
+"points": PoolVector2Array(  )
+}
+
+[sub_resource type="RectangleShape2D" id=2]
+extents = Vector2( 27, 27 )
+
+[node name="BaseBoss" type="Node2D"]
+script = ExtResource( 2 )
+
+[node name="Path2D" type="Path2D" parent="."]
+curve = SubResource( 1 )
+
+[node name="PathFollow2D" type="PathFollow2D" parent="Path2D"]
+
+[node name="Boss" type="KinematicBody2D" parent="Path2D/PathFollow2D"]
+unique_name_in_owner = true
+self_modulate = Color( 0.231373, 0.85098, 0.254902, 1 )
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Path2D/PathFollow2D/Boss"]
+shape = SubResource( 2 )
+
+[node name="Sprite" type="Sprite" parent="Path2D/PathFollow2D/Boss"]
+scale = Vector2( 0.84375, 0.84375 )
+texture = ExtResource( 1 )

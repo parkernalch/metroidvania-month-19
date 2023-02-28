@@ -12,6 +12,7 @@ var health: int = 100
 var powers: int = 0
 
 func _ready():
+	add_to_group("Player")
 	connect_signals()
 	set_default_casts()
 
@@ -44,7 +45,8 @@ func setup_casts(casts):
 		cast.enabled = true	
 
 func _stateMachine_transitioned(new_name):
-	print(new_name)
+#	print(new_name)
+	pass
 	
 func _unhandled_input(event: InputEvent):
 	if event is InputEventKey and event.is_pressed():

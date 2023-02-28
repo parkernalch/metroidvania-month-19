@@ -9,6 +9,11 @@
 config_version=4
 
 _global_script_classes=[ {
+"base": "Node2D",
+"class": "BaseBoss",
+"language": "GDScript",
+"path": "res://Gameplay/Enemy/Boss/base_boss.gd"
+}, {
 "base": "KinematicBody2D",
 "class": "BaseEnemy",
 "language": "GDScript",
@@ -45,6 +50,7 @@ _global_script_classes=[ {
 "path": "res://StateMachine/state_machine.gd"
 } ]
 _global_script_class_icons={
+"BaseBoss": "",
 "BaseEnemy": "",
 "EnemyState": "",
 "Pickup": "",
