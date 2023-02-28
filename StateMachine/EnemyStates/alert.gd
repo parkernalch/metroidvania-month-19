@@ -5,22 +5,16 @@ var disinterest_timer: Timer
 var interest_timer: Timer
 
 func enter(_msg := {}) -> void:
-	disinterest_timer = Timer.new()
-	disinterest_timer.wait_time = 3
-	disinterest_timer.one_shot = true
-	add_child(disinterest_timer)
-	disinterest_timer.connect("timeout", self, "_on_disinterestTimer_timeout")
-	
-	interest_timer = Timer.new()
-	interest_timer.wait_time = 1
-	disinterest_timer.one_shot = true
-	add_child(interest_timer)
-	interest_timer.connect("timeout", self, "_on_interestTimer_timeout")
-	interest_timer.start()
-	
+	print("alert")
+	disinterest_timer = Global.add_timer(disinterest_timer, 3, self, "_on_disinterestTimer_timeout", false)
+	interest_timer = Global.add_timer(interest_timer, 1, self, "_on_interestTimer_timeout")
+
 func physics_update(delta: float) -> void:
 	var sq_distance_to_player = player.global_position.distance_squared_to(enemy.global_position)
-	
+
+	if sq_distance_to_player < Global.detection_distance:
+		owner.velocity.x = (enemy.global_position.direction_to(player.global_position) * enemy_speed[owner.type]).x / 2
+
 	if interest_timer.is_stopped() and sq_distance_to_player < Global.detection_distance:
 		interest_timer.start()
 		disinterest_timer.stop()

@@ -4,6 +4,11 @@ class_name EnemyState
 var enemy: BaseEnemy
 var player: Node2D
 
+# attack range / speed for enemies (0: charger) (1: jumper) (2: shooter) 
+var attack_range = [100, 150, 300]
+var enemy_speed = [80, 60, 30]
+var windup_time = [1, 2, 3]
+
 func _ready() -> void:
 	yield(owner, "ready")
 	set_enemy()

@@ -11,3 +11,13 @@ enum POWERUP_TYPE {
 	SHRINK = 1 << 5,
 	WALLJUMP = 1 << 6
 }
+
+func add_timer(timer, wait_time, parent, connected_func, start=true, one_shot=true):
+	timer = Timer.new()
+	timer.wait_time = wait_time
+	timer.one_shot = one_shot
+	parent.add_child(timer)
+	timer.connect("timeout", parent, connected_func)
+	if start:
+		timer.start()
+	return timer

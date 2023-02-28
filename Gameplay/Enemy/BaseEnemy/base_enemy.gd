@@ -1,8 +1,18 @@
-extends Node2D
+extends KinematicBody2D
 class_name BaseEnemy
 
 var max_health: int
 var current_health: int
+
+var velocity = Vector2.ZERO
+
+enum ENEMY_TYPE {
+	CHARGER,
+	JUMPER,
+	SHOOTER
+}
+
+export(ENEMY_TYPE) var type = ENEMY_TYPE.CHARGER
 
 var animation_player: AnimationPlayer
 
@@ -29,7 +39,8 @@ func _process(delta):
 	pass
 	
 func _physics_process(delta):
-	pass
+	velocity = move_and_slide_with_snap(velocity.limit_length(325), Vector2.UP, Vector2.UP)
+	
 	
 func attack() -> void:
 	pass
