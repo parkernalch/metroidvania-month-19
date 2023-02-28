@@ -12,8 +12,10 @@ func enter(_msg := {}) -> void:
 func physics_update(delta: float) -> void:
 	var sq_distance_to_player = player.global_position.distance_squared_to(enemy.global_position)
 
-	if sq_distance_to_player < Global.detection_distance:
+	if sq_distance_to_player < Global.detection_distance and owner.on_floor():
 		owner.velocity.x = (enemy.global_position.direction_to(player.global_position) * enemy_speed[owner.type]).x / 2
+	else:
+		owner.velocity = Vector2.ZERO
 
 	if interest_timer.is_stopped() and sq_distance_to_player < Global.detection_distance:
 		interest_timer.start()

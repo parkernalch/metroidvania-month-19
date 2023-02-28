@@ -6,6 +6,10 @@ var current_health: int
 
 var velocity = Vector2.ZERO
 
+var left_floor_cast : RayCast2D
+var right_floor_cast : RayCast2D
+
+
 enum ENEMY_TYPE {
 	CHARGER,
 	JUMPER,
@@ -21,11 +25,33 @@ var states
 
 var state_map = {}
 
+
+func set_default_casts():
+	left_floor_cast = RayCast2D.new()
+	right_floor_cast = RayCast2D.new()
+	setup_casts(
+		{
+			left_floor_cast: Vector2(-12, 12),
+			right_floor_cast: Vector2(12, 12)
+		}
+	)
+
+func setup_casts(casts):
+	for cast in casts:
+		add_child(cast)
+		cast.collision_mask = 2
+		cast.cast_to = casts[cast]
+		cast.enabled = true	
+
 func _ready():
 	add_to_group("Enemy")
 	state_map = get_states()
 	animation_player = get_node("AnimationPlayer")
+	set_default_casts()
 	
+func on_floor():
+	return left_floor_cast.is_colliding() and right_floor_cast.is_colliding()
+
 func get_states() -> Dictionary:
 	var state_map = {}
 	var states_list = get_node("States")

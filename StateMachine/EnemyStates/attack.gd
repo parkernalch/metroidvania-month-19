@@ -23,8 +23,11 @@ func _physics_process(delta):
 			2: handle_shooter_attack()
 		
 func handle_charger_attack():
-	owner.velocity.x = (enemy.global_position.direction_to(player.global_position) * enemy_speed[owner.type]).x * 2
-
+	if owner.on_floor():
+		owner.velocity.x = (enemy.global_position.direction_to(player.global_position) * enemy_speed[owner.type]).x * 2
+	else:
+		owner.velocity = Vector2.ZERO
+		
 func handle_jumper_attack():
 	pass
 
