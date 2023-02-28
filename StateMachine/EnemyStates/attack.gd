@@ -23,8 +23,9 @@ func _physics_process(delta):
 			2: handle_shooter_attack()
 		
 func handle_charger_attack():
-	if owner.on_floor():
-		owner.velocity.x = (enemy.global_position.direction_to(player.global_position) * enemy_speed[owner.type]).x * 2
+	var direction_to_player = enemy.global_position.direction_to(player.global_position)
+	if owner.floor_side() == 0 or owner.floor_side() == -1 and direction_to_player.x < 0 or owner.floor_side() == 1 and direction_to_player.x > 0:
+		owner.velocity.x = (direction_to_player * enemy_speed[owner.type]).x * 2
 	else:
 		owner.velocity = Vector2.ZERO
 		

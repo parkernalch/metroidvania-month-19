@@ -6,9 +6,12 @@ var current_health: int
 
 var velocity = Vector2.ZERO
 
+var hit_area : Area2D
+
 var left_floor_cast : RayCast2D
 var right_floor_cast : RayCast2D
 
+var health = 100.0
 
 enum ENEMY_TYPE {
 	CHARGER,
@@ -47,8 +50,17 @@ func _ready():
 	add_to_group("Enemy")
 	state_map = get_states()
 	animation_player = get_node("AnimationPlayer")
+	hit_area = $hitArea
+	hit_area.connect("body_entered", self, "_player_hit")
 	set_default_casts()
 	
+# returns -1 for left 1 for right 0 for both
+func floor_side():
+	if (on_floor()):
+		return 0
+	else:
+		return -1 if left_floor_cast.is_colliding() else 1 
+
 func on_floor():
 	return left_floor_cast.is_colliding() and right_floor_cast.is_colliding()
 
@@ -70,6 +82,11 @@ func _physics_process(delta):
 	
 func attack() -> void:
 	pass
+
+func _player_hit(player):
+	if player.name == "StatefulPlayer":
+		if player.has_method("take_damage"):
+			player.take_damage(20)
 
 func get_save_data():
 	return {

@@ -8,6 +8,7 @@ var left_bottom_cast: RayCast2D
 
 var horizontal_speed = 0.0
 
+var health: int = 100
 var powers: int = 0
 
 func _ready():
@@ -110,7 +111,10 @@ func is_squeezable():
 	set_default_casts(false)
 	print("" if output else "not" + " squeezable")
 	return output
-	
+
+func die():
+	print("im dead")
+
 func shrink_collider():
 	$CollisionShape2D.scale = Vector2(1, 0.5)
 	$Sprite.scale = Vector2(0.2, 0.1)
@@ -124,6 +128,13 @@ func shrink_collider():
 	)
 	pass
 
+func take_damage(damage):
+	if health - damage > 0:
+		health -= damage
+		print(health)
+	else:
+		die()
+	
 func unshrink_collider():
 	$CollisionShape2D.scale = Vector2(1, 1)
 	$Sprite.scale = Vector2(0.2, 0.2)
