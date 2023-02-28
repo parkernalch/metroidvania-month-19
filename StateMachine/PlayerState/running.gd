@@ -4,8 +4,6 @@ var state_machine: StateMachine
 var direction: float
 	
 func handle_input(input: InputEvent) -> void:
-	if input.is_action_released("sprint"):
-		state_machine.transition_to("walking")
 	if input.is_action_pressed("jump") and owner.can_jump():
 		state_machine.transition_to("jumping", { "jumps_remaining": 1 })
 	if input.is_action_pressed("dash") and owner.can_dash():
