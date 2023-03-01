@@ -25,6 +25,16 @@ _global_script_classes=[ {
 "path": "res://StateMachine/EnemyStates/enemy_state.gd"
 }, {
 "base": "Area2D",
+"class": "HitBox",
+"language": "GDScript",
+"path": "res://Gameplay/Systems/HitHurt/hit_box.gd"
+}, {
+"base": "Area2D",
+"class": "HurtBox",
+"language": "GDScript",
+"path": "res://Gameplay/Systems/HitHurt/hurt_box.gd"
+}, {
+"base": "Area2D",
 "class": "Pickup",
 "language": "GDScript",
 "path": "res://Gameplay/Pickup/BasePickup.gd"
@@ -53,6 +63,8 @@ _global_script_class_icons={
 "BaseBoss": "",
 "BaseEnemy": "",
 "EnemyState": "",
+"HitBox": "",
+"HurtBox": "",
 "Pickup": "",
 "PlatformerData": "",
 "Player": "",
@@ -144,6 +156,8 @@ crouch={
 2d_physics/layer_3="interactable"
 2d_physics/layer_4="enemy"
 2d_physics/layer_5="hazard"
+2d_physics/layer_6="hitbox"
+2d_physics/layer_7="hurtbox"
 
 [mono]
 

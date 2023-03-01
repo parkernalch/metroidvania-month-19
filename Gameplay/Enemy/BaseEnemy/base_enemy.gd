@@ -86,7 +86,7 @@ func attack() -> void:
 func _player_hit(player):
 	if player.name == "StatefulPlayer":
 		if player.has_method("take_damage"):
-			player.take_damage(20)
+			player.take_damage(20, global_position)
 
 func get_save_data():
 	return {

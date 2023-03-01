@@ -130,10 +130,14 @@ func shrink_collider():
 	)
 	pass
 
-func take_damage(damage):
+func take_damage(damage: int, damage_source: Vector2):
 	if health - damage > 0:
 		health -= damage
-		print(health)
+		$StateMachine.transition_to("hitstun", {
+			"direction" : (global_position - damage_source).normalized(),
+			"stun_time": 0.125
+		})
+		print(str(health) + " going to hitstun")
 	else:
 		die()
 	
