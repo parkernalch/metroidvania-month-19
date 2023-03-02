@@ -5,15 +5,19 @@ var state_machine: StateMachine
 var windup_timer : Timer
 var attack_timer : Timer
 
+var hit_area : Area2D
+
 var attacking = false
 
 func enter(_msg := {}) -> void:
+	hit_area = owner.get_node("hitArea")
+	hit_area.connect("body_entered", self, "_player_hit")
 	print("attack")
 	attacking = false
 	owner.velocity = Vector2.ZERO
 	windup_timer = Global.add_timer(windup_timer, windup_time[owner.type], self, "_on_windup_timeout")	
 	if owner.type == 0:
-		attack_timer = Global.add_timer(attack_timer, 3, self, "_attack_done")
+		attack_timer = Global.add_timer(attack_timer, 2, self, "_attack_done")
 
 func _physics_process(delta):
 	if attacking:
@@ -21,7 +25,15 @@ func _physics_process(delta):
 			0: handle_charger_attack()
 			1: handle_jumper_attack()
 			2: handle_shooter_attack()
-		
+
+func _player_hit(player):
+	if player.name == "StatefulPlayer":
+		if player.has_method("take_damage") && owner.type == 0:
+			player.take_damage(20, owner.global_position, 2)
+		owner.velocity = Vector2.ZERO
+		attacking = false
+		state_machine.transition_to("idle")
+
 func handle_charger_attack():
 	var direction_to_player = enemy.global_position.direction_to(player.global_position)
 	if owner.floor_side() == 0 or owner.floor_side() == -1 and direction_to_player.x < 0 or owner.floor_side() == 1 and direction_to_player.x > 0:
@@ -40,7 +52,7 @@ func _on_windup_timeout():
 
 func _attack_done():
 	attacking = false
-	state_machine.transition_to("Idle")
+	state_machine.transition_to("idle")
 
 func exit():
 	windup_timer.disconnect("timeout", self, "_on_windup_timeout")

@@ -28,10 +28,10 @@ func physics_update(delta: float) -> void:
 		pass
 
 func _on_disinterestTimer_timeout():
-	state_machine.transition_to("Idle")
+	state_machine.transition_to("idle")
 
 func _on_interestTimer_timeout():
-	state_machine.transition_to("Attack")
+	state_machine.transition_to("attack")
 	
 func exit():
 	interest_timer.disconnect("timeout", self, "_on_interestTimer_timeout")

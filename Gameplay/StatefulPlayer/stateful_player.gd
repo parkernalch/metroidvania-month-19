@@ -15,7 +15,7 @@ func _ready():
 	add_to_group("Player")
 	connect_signals()
 	set_default_casts()
-
+	
 func set_default_casts(initialize=true):
 	if initialize:
 		initialize_casts()
@@ -30,7 +30,7 @@ func set_default_casts(initialize=true):
 
 func connect_signals():
 	$StateMachine.connect("transitioned", self, "_stateMachine_transitioned")
-
+	
 func initialize_casts():
 	right_top_cast = RayCast2D.new()
 	right_bottom_cast = RayCast2D.new()
@@ -47,7 +47,7 @@ func setup_casts(casts):
 func _stateMachine_transitioned(new_name):
 #	print(new_name)
 	pass
-	
+
 func _unhandled_input(event: InputEvent):
 	if event is InputEventKey and event.is_pressed():
 		match event.scancode:
@@ -130,11 +130,11 @@ func shrink_collider():
 	)
 	pass
 
-func take_damage(damage: int, damage_source: Vector2):
+func take_damage(damage: int, damage_source: Vector2, stun_strength = 1):
 	if health - damage > 0:
 		health -= damage
 		$StateMachine.transition_to("hitstun", {
-			"direction" : (global_position - damage_source).normalized(),
+			"direction" : (global_position - damage_source).normalized() * stun_strength,
 			"stun_time": 0.125
 		})
 		print(str(health) + " going to hitstun")

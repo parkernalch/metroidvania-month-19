@@ -18,6 +18,7 @@ func physics_update(delta: float) -> void:
 		state_machine.transition_to("idle")
 	
 func enter(_msg := {}) -> void:
+	elapsed_time = 0
 	direction = _msg.direction if _msg.has("direction") else Vector2.UP
 	stun_time = _msg.stun_time if _msg.has("stun_time") else 0.125
 	

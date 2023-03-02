@@ -26,15 +26,16 @@ texture = ExtResource( 3 )
 
 [node name="StateMachine" type="Node" parent="."]
 script = ExtResource( 2 )
-initial_state = NodePath("Idle")
+initial_state = NodePath("idle")
 
-[node name="Idle" type="Node" parent="StateMachine"]
+[node name="idle" type="Node" parent="StateMachine"]
 script = ExtResource( 4 )
+delay = null
 
-[node name="Alert" type="Node" parent="StateMachine"]
+[node name="alert" type="Node" parent="StateMachine"]
 script = ExtResource( 1 )
 
-[node name="Attack" type="Node" parent="StateMachine"]
+[node name="attack" type="Node" parent="StateMachine"]
 script = ExtResource( 6 )
 
 [node name="Label" type="Label" parent="StateMachine"]

@@ -50,8 +50,6 @@ func _ready():
 	add_to_group("Enemy")
 	state_map = get_states()
 	animation_player = get_node("AnimationPlayer")
-	hit_area = $hitArea
-	hit_area.connect("body_entered", self, "_player_hit")
 	set_default_casts()
 	
 # returns -1 for left 1 for right 0 for both
@@ -83,10 +81,6 @@ func _physics_process(delta):
 func attack() -> void:
 	pass
 
-func _player_hit(player):
-	if player.name == "StatefulPlayer":
-		if player.has_method("take_damage"):
-			player.take_damage(20, global_position)
 
 func get_save_data():
 	return {
