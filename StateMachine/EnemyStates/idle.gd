@@ -65,6 +65,9 @@ func _wander_timer_done():
 
 func exit():
 	attack_cooldown_timer.disconnect("timeout", self, "_on_attack_cooldown_done")
+	wander_timer.disconnect("timeout", self, "_wander_timer_done")
+	wander_stop_timer.disconnect("timeout", self, "_wander_stop")
+	wander = false
 	pass
 	
 func _on_attack_cooldown_done():
