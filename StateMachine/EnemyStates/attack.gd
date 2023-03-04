@@ -5,11 +5,14 @@ var state_machine: StateMachine
 var windup_timer : Timer
 var attack_timer : Timer
 
+var charge_direction : Vector2
+
 var hit_area : Area2D
 
 var attacking = false
 
 func enter(_msg := {}) -> void:
+	charge_direction = enemy.global_position.direction_to(player.global_position)
 	hit_area = owner.get_node("hitArea")
 	hit_area.connect("body_entered", self, "_player_hit")
 	print("attack")
@@ -35,9 +38,8 @@ func _player_hit(player):
 		state_machine.transition_to("idle")
 
 func handle_charger_attack():
-	var direction_to_player = enemy.global_position.direction_to(player.global_position)
-	if owner.floor_side() == 0 or owner.floor_side() == -1 and direction_to_player.x < 0 or owner.floor_side() == 1 and direction_to_player.x > 0:
-		owner.velocity.x = (direction_to_player * enemy_speed[owner.type]).x * 2
+	if owner.floor_side() == 0 or owner.floor_side() == -1 and charge_direction.x < 0 or owner.floor_side() == 1 and charge_direction.x > 0:
+		owner.velocity.x = (charge_direction * enemy_speed[owner.type]).x * 2
 	else:
 		owner.velocity = Vector2.ZERO
 		
