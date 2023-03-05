@@ -27,6 +27,7 @@ func physics_update(delta: float) -> void:
 	pass
 	
 func enter(_msg := {}) -> void:
+	owner.set_animation("fall")
 	owner.velocity *= 0.4
 	jumps_remaining = _msg.jumps_remaining if _msg.has("jumps_remaining") else 0
 	

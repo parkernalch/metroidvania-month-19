@@ -59,6 +59,7 @@ func evaluate_launch_vector(direction: float, wall: int) -> Vector2:
 	return Vector2.ZERO
 	
 func enter(_msg := {}) -> void:
+	owner.set_animation("jump")
 	direction = Input.get_action_strength("move_right") - Input.get_action_strength("move_left")
 	jumps_remaining = _msg.jumps_remaining if _msg.has("jumps_remaining") else 0
 	control_lock_time = _msg.control_lock_time if _msg.has("control_lock_time") else 0

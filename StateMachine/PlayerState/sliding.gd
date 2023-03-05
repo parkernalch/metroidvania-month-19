@@ -37,6 +37,7 @@ func physics_update(delta: float) -> void:
 		state_machine.transition_to("falling")
 	
 func enter(_msg := {}) -> void:
+	owner.set_animation("slide")
 	if owner.velocity.y < 0:
 		owner.velocity *= Vector2(1, 0.2)
 	time_on_wall = 0

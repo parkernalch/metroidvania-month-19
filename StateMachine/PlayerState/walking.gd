@@ -29,6 +29,7 @@ func physics_update(delta: float) -> void:
 		state_machine.transition_to("falling")
 	
 func enter(_msg := {}) -> void:
+	owner.set_animation("idle")
 	owner.horizontal_speed = 100
 	pass
 	

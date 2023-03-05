@@ -81,6 +81,8 @@ func _unhandled_input(event: InputEvent):
 
 func _physics_process(delta):
 	velocity = move_and_slide_with_snap(velocity.limit_length(325), Vector2.UP, Vector2.UP)
+	if velocity.x != 0:
+		$Sprite.flip_h = velocity.x < 0
 
 func get_wall() -> int:
 	if right_top_cast.is_colliding() || right_bottom_cast.is_colliding():
@@ -143,9 +145,12 @@ func take_damage(damage: int, damage_source: Vector2, stun_strength = 1):
 	
 func unshrink_collider():
 	$CollisionShape2D.scale = Vector2(1, 1)
-	$Sprite.scale = Vector2(0.2, 0.2)
+	$Sprite.scale = Vector2(0.275, 0.275)
 	set_default_casts(false)
 	pass
+
+func set_animation(animation_name: String):
+	$AnimationPlayer.play(animation_name)
 
 func can_run() -> bool:
 	return Global.POWERUP_TYPE.RUN & powers

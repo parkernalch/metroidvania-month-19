@@ -18,6 +18,7 @@ func physics_update(delta: float) -> void:
 		state_machine.transition_to("idle")
 	
 func enter(_msg := {}) -> void:
+	owner.set_animation("idle")
 	pass
 	
 func exit() -> void:

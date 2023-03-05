@@ -19,6 +19,7 @@ func physics_update(delta: float) -> void:
 	dash_time -= delta
 	
 func enter(_msg := {}) -> void:
+	owner.set_animation("dash")
 	direction = _msg.direction if _msg.has("direction") else Vector2.UP
 	dash_time = 0.25
 	
