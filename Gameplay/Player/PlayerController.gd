@@ -1,5 +1,5 @@
 extends KinematicBody2D
-class_name Player
+class_name PlayerController
 
 signal movement_started(movement_direction)
 signal changing_direction(current_velocity, input_direction)

@@ -1,4 +1,5 @@
 extends KinematicBody2D
+class_name Player
 
 var velocity = Vector2.ZERO
 var right_top_cast: RayCast2D
@@ -11,10 +12,13 @@ var horizontal_speed = 0.0
 var health: int = 100
 var powers: int = 0
 
+var player_cam: Camera2D
+
 func _ready():
 	add_to_group("Player")
 	connect_signals()
 	set_default_casts()
+	player_cam = $Camera2D
 	
 func set_default_casts(initialize=true):
 	if initialize:
@@ -172,3 +176,6 @@ func can_shrink() -> bool:
 
 func can_unshrink() -> bool:
 	return (Global.POWERUP_TYPE.SHRINK & powers) and (!left_top_cast.is_colliding() and !right_top_cast.is_colliding())
+
+func restore_follow_cam(current_camera: Camera2D):
+	pass

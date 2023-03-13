@@ -47,6 +47,11 @@ _global_script_classes=[ {
 "base": "KinematicBody2D",
 "class": "Player",
 "language": "GDScript",
+"path": "res://Gameplay/StatefulPlayer/stateful_player.gd"
+}, {
+"base": "KinematicBody2D",
+"class": "PlayerController",
+"language": "GDScript",
 "path": "res://Gameplay/Player/PlayerController.gd"
 }, {
 "base": "Node",
@@ -68,6 +73,7 @@ _global_script_class_icons={
 "Pickup": "",
 "PlatformerData": "",
 "Player": "",
+"PlayerController": "",
 "State": "",
 "StateMachine": ""
 }
