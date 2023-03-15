@@ -278,3 +278,5 @@ anims/hurt = SubResource( 24 )
 anims/idle = SubResource( 20 )
 anims/jump = SubResource( 21 )
 anims/slide = SubResource( 22 )
+
+[node name="AudioStreamPlayer2D" type="AudioStreamPlayer2D" parent="."]

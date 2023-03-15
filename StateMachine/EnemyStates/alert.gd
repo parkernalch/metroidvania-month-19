@@ -13,10 +13,10 @@ func physics_update(delta: float) -> void:
 	var sq_distance_to_player = player.global_position.distance_squared_to(enemy.global_position)
 	var direction_to_player = enemy.global_position.direction_to(player.global_position)
 
-	if sq_distance_to_player < Global.detection_distance and owner.on_floor() or owner.floor_side() == -1 and direction_to_player.x < 0 or owner.floor_side() == 1 and direction_to_player.x > 0:
-		owner.velocity.x = (direction_to_player * enemy_speed[owner.type]).x / 2
-	else:
-		owner.velocity = Vector2.ZERO
+	match owner.type:
+		0: handle_charger_alert(sq_distance_to_player, direction_to_player)
+		1: handle_jumper_alert(sq_distance_to_player, direction_to_player)
+		2: handle_shooter_alert(sq_distance_to_player, direction_to_player)
 
 	if interest_timer.is_stopped() and sq_distance_to_player < Global.detection_distance:
 		interest_timer.start()
@@ -26,6 +26,19 @@ func physics_update(delta: float) -> void:
 		disinterest_timer.start()
 	else:
 		pass
+
+
+func handle_charger_alert(sq_distance_to_player, direction_to_player):
+	if sq_distance_to_player < Global.detection_distance and owner.on_floor() or owner.floor_side() == -1 and direction_to_player.x < 0 or owner.floor_side() == 1 and direction_to_player.x > 0:
+		owner.velocity.x = (direction_to_player * enemy_speed[owner.type]).x / 2
+	else:
+		owner.velocity = Vector2.ZERO
+
+func handle_jumper_alert(sq_distance_to_player, direction_to_player):
+	pass
+
+func handle_shooter_alert(sq_distance_to_player, direction_to_player):
+	pass
 
 func _on_disinterestTimer_timeout():
 	state_machine.transition_to("idle")

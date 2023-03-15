@@ -9,6 +9,9 @@ var time_since_jump = 0
 var wall = 0
 var jump_type = ""
 
+var jump_sound = preload("res://Assets/sounds/jump.wav")
+onready var audio_player = owner.get_node("AudioStreamPlayer2D")
+
 func handle_input(input: InputEvent) -> void:
 	if input.is_action_released("jump") and owner.can_double_jump():
 		state_machine.transition_to("falling", { "jumps_remaining": jumps_remaining })
@@ -60,6 +63,8 @@ func evaluate_launch_vector(direction: float, wall: int) -> Vector2:
 	
 func enter(_msg := {}) -> void:
 	owner.set_animation("jump")
+	audio_player.stream = jump_sound
+	audio_player.play()
 	direction = Input.get_action_strength("move_right") - Input.get_action_strength("move_left")
 	jumps_remaining = _msg.jumps_remaining if _msg.has("jumps_remaining") else 0
 	control_lock_time = _msg.control_lock_time if _msg.has("control_lock_time") else 0

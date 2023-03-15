@@ -23,6 +23,19 @@ func enter(_msg := {}) -> void:
 
 func physics_update(delta: float) -> void:
 	time_remaining -= delta
+
+	match owner.type:
+		0: handle_charger_idle()
+		1: handle_jumper_idle()
+		2: handle_shooter_idle()
+	
+	if time_remaining > 0 || attack_cooldown:
+		return
+	if player.global_position.distance_squared_to(enemy.global_position) < Global.detection_distance:
+		state_machine.transition_to("alert")
+	pass
+
+func handle_charger_idle():
 	if wander:
 		if wander_direction == Vector2.LEFT && owner.floor_side() == 1 or wander_direction == Vector2.RIGHT && owner.floor_side() == -1:
 			stop_wander()
@@ -30,12 +43,13 @@ func physics_update(delta: float) -> void:
 			owner.velocity = wander_direction * 40;
 	else:
 		owner.velocity = Vector2.ZERO
-	if time_remaining > 0 || attack_cooldown:
-		return
-	if player.global_position.distance_squared_to(enemy.global_position) < Global.detection_distance:
-		state_machine.transition_to("alert")
+
+func handle_jumper_idle():	
 	pass
-		
+	
+func handle_shooter_idle():
+	pass
+
 func stop_wander():
 	var wander_time = get_random_number(2.0, 10.0)
 	wander_timer.wait_time = wander_time

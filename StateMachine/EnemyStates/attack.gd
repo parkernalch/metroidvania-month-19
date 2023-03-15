@@ -44,6 +44,7 @@ func handle_charger_attack():
 		owner.velocity = Vector2.ZERO
 		
 func handle_jumper_attack():
+	owner.velocity = (Vector2.UP * 2 + Vector2.RIGHT) * 250;
 	pass
 
 func handle_shooter_attack():
